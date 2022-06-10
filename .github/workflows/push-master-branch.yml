@@ -4,7 +4,7 @@ name: Deploy master branch to production org
 # Definition when the workflow should run
 on:
     push:
-      branches: [ master ]
+      branches: [ main ]
       paths:
         - 'force-app/**'
             
@@ -49,10 +49,12 @@ jobs:
 
             # Authenticate to org
             - name: 'Authenticate to Production Org'
-              run: sfdx force:auth:sfdxurl:store -f ./SFDX_PRODUCTION_URL.txt -s -a production
-
+              run: sfdx auth:sfdxurl:store -f sfdxurl.txt
+              
             - name: 'Deploy the entire branch to Production org'
-              run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+              run: sfdx force:source:deploy -u madhukar.ponnala-nylz@force.com --manifest manifest/package.xml
 
-            - name: 'Deploy destructive changes (if any) to Production org'
-              run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
+            #- name: 'Deploy destructive changes (if any) to Production org'
+             # run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
+             
+             
